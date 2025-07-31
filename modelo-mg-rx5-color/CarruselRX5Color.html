@@ -52,6 +52,7 @@
       border-radius: 50%;
       border: 2px solid #ccc;
       margin-bottom: 5px;
+      transition: border 0.3s;
     }
 
     .burbuja.activa {
@@ -69,15 +70,31 @@
   <div class="contenedor-imagen">
     <img id="imagenPrincipal" src="RX5Blanco.jpg" alt="MG RX5" class="imagen-auto">
 
-    <!-- Burbujas flotantes -->
     <div class="burbuja-flotante">
-      <div class="color-selector" onclick="seleccionarColor('RX5Blanco.jpg', this)">
+      <div class="color-selector" data-img="RX5Blanco.jpg">
         <div class="burbuja activa" style="background-color: white;"></div>
         <div class="nombre-color">Blanco</div>
       </div>
-      <div class="color-selector" onclick="seleccionarColor('RX5Negro.jpg', this)">
+      <div class="color-selector" data-img="RX5Negro.jpg">
         <div class="burbuja" style="background-color: black;"></div>
         <div class="nombre-color">Negro</div>
       </div>
-      <div class="color-selector" onclick="seleccionarColor('RX5Plomo.jpg', this)">
-        <div class="burbuja" style="background-color: #555;"></div>
+      <div class="color-selector" data-img="RX5Plomo.jpg">
+        <div class="burbuja" style="background-color: #666;"></div>
+        <div class="nombre-color">Plomo</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const burbujas = document.querySelectorAll('.color-selector');
+    const imagen = document.getElementById('imagenPrincipal');
+
+    burbujas.forEach(burbuja => {
+      burbuja.addEventListener('click', function() {
+        const nuevaImg = this.getAttribute('data-img');
+        imagen.src = nuevaImg;
+
+        document.querySelectorAll('.burbuja').forEach(b => b.classList.remove('activa'));
+        this.querySelector('.burbuja').classList.add('activa');
+      });
