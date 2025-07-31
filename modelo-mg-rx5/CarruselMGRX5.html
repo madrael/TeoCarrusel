@@ -1,127 +1,89 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>MG RX5 - Carrusel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
   <style>
     body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f9f9f9;
+      background: #f4f4f4;
+      padding-top: 30px;
     }
 
-    .carrusel-container {
-      max-width: 600px;
+    .carousel-inner > .item > img,
+    .carousel-inner > .item > a > img {
+      width: 60%;
       margin: auto;
-      position: relative;
-    }
-
-    .carrusel-imagen {
-      width: 100%;
-      height: 350px;
+      max-height: 400px;
       object-fit: contain;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      display: block;
     }
 
-    .flechas {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      transform: translateY(-50%);
-    }
-
-    .flechas button {
+    .carousel-caption {
       background-color: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
       padding: 10px;
-      font-size: 18px;
-      cursor: pointer;
-      border-radius: 50%;
-    }
-
-    .miniaturas {
-      display: flex;
-      justify-content: center;
-      margin-top: 15px;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .miniaturas img {
-      width: 80px;
-      height: 60px;
-      object-fit: cover;
-      cursor: pointer;
-      border: 2px solid transparent;
-      border-radius: 4px;
-    }
-
-    .miniaturas img.activa {
-      border-color: #007BFF;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
 
-  <div class="carrusel-container">
-    <img id="imagenPrincipal" class="carrusel-imagen" src="1.jpg" alt="MG RX5">
+<div class="container">
+  <div id="theCarousel" class="carousel slide" data-ride="carousel">
 
-    <div class="flechas">
-      <button onclick="cambiarImagen(-1)">‹</button>
-      <button onclick="cambiarImagen(1)">›</button>
+    <!-- Indicadores -->
+    <ol class="carousel-indicators">
+      <!-- Generado por JS -->
+    </ol>
+
+    <!-- Slides -->
+    <div class="carousel-inner" role="listbox">
+      <!-- Generado por JS -->
     </div>
 
-    <div class="miniaturas" id="miniaturas"></div>
+    <!-- Controles -->
+    <a class="left carousel-control" href="#theCarousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="right carousel-control" href="#theCarousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Siguiente</span>
+    </a>
+
   </div>
+</div>
 
-  <script>
-    const imagenes = [];
-    for (let i = 1; i <= 16; i++) {
-      imagenes.push(i + '.jpg');
-    }
+<script>
+  const totalImagenes = 16;
+  const carruselInner = document.querySelector(".carousel-inner");
+  const indicadores = document.querySelector(".carousel-indicators");
 
-    let indiceActual = 0;
+  for (let i = 1; i <= totalImagenes; i++) {
+    // Slide
+    const item = document.createElement("div");
+    item.className = "item" + (i === 1 ? " active" : "");
+    item.innerHTML = `
+      <img src="${i}.jpg" alt="Imagen ${i}">
+      <div class="carousel-caption">
+        <h4>MG RX5 - Imagen ${i}</h4>
+      </div>
+    `;
+    carruselInner.appendChild(item);
 
-    function actualizarImagen() {
-      const imgPrincipal = document.getElementById("imagenPrincipal");
-      const miniaturas = document.querySelectorAll(".miniaturas img");
-
-      imgPrincipal.src = imagenes[indiceActual];
-
-      miniaturas.forEach((thumb, i) => {
-        thumb.classList.toggle("activa", i === indiceActual);
-      });
-    }
-
-    function cambiarImagen(direccion) {
-      indiceActual = (indiceActual + direccion + imagenes.length) % imagenes.length;
-      actualizarImagen();
-    }
-
-    function seleccionarImagen(indice) {
-      indiceActual = indice;
-      actualizarImagen();
-    }
-
-    function cargarMiniaturas() {
-      const contenedor = document.getElementById("miniaturas");
-      imagenes.forEach((src, index) => {
-        const img = document.createElement("img");
-        img.src = src;
-        img.onclick = () => seleccionarImagen(index);
-        if (index === 0) img.classList.add("activa");
-        contenedor.appendChild(img);
-      });
-    }
-
-    cargarMiniaturas();
-  </script>
+    // Indicador
+    const indicador = document.createElement("li");
+    indicador.setAttribute("data-target", "#theCarousel");
+    indicador.setAttribute("data-slide-to", i - 1);
+    if (i === 1) indicador.className = "active";
+    indicadores.appendChild(indicador);
+  }
+</script>
 
 </body>
 </html>
