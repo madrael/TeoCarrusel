@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>MG RX5 - Colores</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      background-color: #fff;
+    }
 
+    .contenedor-imagen {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    .imagen-auto {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .burbuja-flotante {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 25px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      align-items: center;
+    }
+
+    .color-selector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .burbuja {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      margin-bottom: 5px;
+      transition: border 0.3s;
+    }
+
+    .burbuja.activa {
+      border: 2px solid #007BFF;
+    }
+
+    .nombre-color {
+      font-size: 12px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="contenedor-imagen">
+    <img id="imagenPrincipal" src="RX5Blanco.jpg" alt="MG RX5" class="imagen-auto">
+
+    <div class="burbuja-flotante">
+      <div class="color-selector" data-img="RX5Blanco.jpg">
+        <div class="burbuja activa" style="background-color: white;"></div>
+        <div class="nombre-color">Blanco</div>
+      </div>
+      <div class="color-selector" data-img="RX5Negro.jpg">
+        <div class="burbuja" style="background-color: black;"></div>
+        <div class="nombre-color">Negro</div>
+      </div>
+      <div class="color-selector" data-img="RX5Plomo.jpg">
+        <div class="burbuja" style="background-color: #666;"></div>
+        <div class="nombre-color">Plomo</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const burbujas = document.querySelectorAll('.color-selector');
+    const imagen = document.getElementById('imagenPrincipal');
+
+    burbujas.forEach(burbuja => {
+      burbuja.addEventListener('click', function() {
+        const nuevaImg = this.getAttribute('data-img');
+        imagen.src = nuevaImg;
+
+        document.querySelectorAll('.burbuja').forEach(b => b.classList.remove('activa'));
+        this.querySelector('.burbuja').classList.add('activa');
+      });
+    });
+  </script>
+
+</body>
+</html>
