@@ -1,1 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Galería – Imagen + Texto</title>
+<style>
+  :root {
+    --radius: 14px;
+    --shadow: 0 8px 24px rgba(0,0,0,.08);
+  }
+  body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    margin: 0;
+    padding: 28px 20px 48px;
+    color: #111;
+    background: #fff;
+  }
+  h1 {
+    font-size: clamp(26px, 3vw, 44px);
+    margin: 0 0 22px;
+    font-weight: 650;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  .panel {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 28px;
+    align-items: stretch;
+  }
+  @media (max-width: 900px) {
+    .panel { grid-template-columns: 1fr; }
+  }
+
+  /* Imagen */
+  .imgBox {
+    background: #f5f5f7;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: grid;
+    place-items: center;
+    min-height: 360px;
+  }
+  .imgBox img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Texto */
+  .copy {
+    border-left: 3px solid #1f2937;
+    padding-left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .copy h2 {
+    margin: 0;
+    font-size: clamp(20px, 2.3vw, 26px);
+  }
+  .copy p {
+    margin: 0;
+    color: #4b5563;
+    line-height: 1.55;
+  }
+  .copy .bullet {
+    font-weight: 650;
+    color: #111;
+  }
+
+  /* Flechas */
+  .controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    display: grid; place-items: center;
+    cursor: pointer;
+    transition: transform .08s ease;
+  }
+  .btn:active { transform: scale(.96); }
+  .btn svg { width: 20px; height: 20px; }
+
+  /* Indicadores opcionales */
+  .dots {
+    display: flex; gap: 8px; align-items: center;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #d1d5db;
+  }
+  .dot.active { background: #111; }
+
+  /* Suavizado de cambio de imagen */
+  .fade {
+    animation: fade .35s ease-out;
+  }
+  @keyframes fade { from{opacity:.2} to{opacity:1} }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Diseño exterior</h1>
+
+    <div class="panel">
+      <figure class="imgBox">
+        <img id="slideImage" src="1.jpg" alt="Slide 1">
+      </figure>
+
+      <section class="copy">
+        <h2 id="slideTitle">Estilo y Desempeño en la RX9</h2>
+        <p id="slideDesc">
+          La RX9 se destaca por sus rines de aluminio de hasta 21” bitono y llantas de calidad, asegurando un estilo elegante y un manejo excepcional en cualquier condición.
+        </p>
+        <p class="bullet" id="slideBullet1">Descubre la libertad de conducir bajo un cielo abierto y transforma tu manera de viajar.</p>
+        <p class="bullet" id="slideBullet2">Viaja sin límites y lleva todo lo que necesitas.</p>
+        <p class="bullet" id="slideBullet3">Iluminación Sobresaliente.</p>
+      </section>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="prevBtn" aria-label="Anterior">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <div class="dots" id="dots"></div>
+
+      <button class="btn" id="nextBtn" aria-label="Siguiente">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+<script>
+  // Define tus slides aquí (imagen + textos)
+  const slides = [
+    {
+      img: '1.jpg',
+      title: 'Estilo y Desempeño en la RX9',
+      desc: 'La RX9 se destaca por sus rines de aluminio de hasta 21” bitono y llantas de calidad, esta combinación asegura un estilo elegante y un manejo excepcional.',
+      b1: 'Descubre la libertad de conducir bajo un cielo abierto.',
+      b2: 'Viaja sin límites y lleva todo lo que necesitas.',
+      b3: 'Iluminación sobresaliente.'
+    },
+    {
+      img: '2.jpg',
+      title: 'Confort Premium',
+      desc: 'Materiales suaves al tacto y ensamble de alta precisión para una experiencia silenciosa y cómoda.',
+      b1: 'Asientos ergonómicos con soporte lumbar.',
+      b2: 'Climatización automática multi-zona.',
+      b3: 'Conectividad total para tu día a día.'
+    },
+    {
+      img: '3.jpg',
+      title: 'Tecnología que inspira',
+      desc: 'Pantallas de alta resolución y asistentes avanzados de conducción.',
+      b1: 'Panel digital personalizable.',
+      b2: 'Cámara 360° de alta definición.',
+      b3: 'Actualizaciones OTA.'
+    },
+    {
+      img: '4.jpg',
+      title: 'Espacio y versatilidad',
+      desc: 'La segunda y tercera fila se adaptan a tu estilo de vida.',
+      b1: 'Amplio volumen de carga.',
+      b2: 'Abatimiento 60/40 inteligente.',
+      b3: 'Portón trasero eléctrico.'
+    }
+  ];
+
+  const imgEl   = document.getElementById('slideImage');
+  const titleEl = document.getElementById('slideTitle');
+  const descEl  = document.getElementById('slideDesc');
+  const b1El    = document.getElementById('slideBullet1');
+  const b2El    = document.getElementById('slideBullet2');
+  const b3El    = document.getElementById('slideBullet3');
+  const dotsEl  = document.getElementById('dots');
+
+  let i = 0;
+
+  // Crear puntos
+  slides.forEach((_, idx) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (idx === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(idx));
+    dotsEl.appendChild(d);
+  });
+
+  function render() {
+    const s = slides[i];
+    imgEl.src = s.img;
+    imgEl.alt = s.title;
+    imgEl.classList.remove('fade'); // reinicia animación
+    void imgEl.offsetWidth;         // force reflow
+    imgEl.classList.add('fade');
+
+    titleEl.textContent = s.title;
+    descEl.textContent  = s.desc;
+    b1El.textContent    = s.b1;
+    b2El.textContent    = s.b2;
+    b3El.textContent    = s.b3;
+
+    [...dotsEl.children].forEach((d, idx) => d.classList.toggle('active', idx === i));
+  }
+
+  function next(){ i = (i + 1) % slides.length; render(); }
+  function prev(){ i = (i - 1 + slides.length) % slides.length; render(); }
+  function goTo(idx){ i = idx; render(); }
+
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+
+  // Teclas ← →
+  window.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft')  prev();
+  });
+
+  // Inicial
+  render();
+</script>
+</body>
+</html>
 
