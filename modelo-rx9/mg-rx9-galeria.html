@@ -13,27 +13,68 @@
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:28px 20px 48px;color:var(--ink);background:#fff}
   h1{font-size:clamp(26px,3vw,44px);margin:0 0 22px;font-weight:650}
   .wrap{max-width:1180px;margin:0 auto}
-  .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:start}
-  @media (max-width:900px){.grid{grid-template-columns:1fr}}
 
-  /* Imagen + flechas */
-  .figure{position:relative;background:#f5f5f7;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);min-height:360px;display:grid;place-items:center}
+  /* Layout: imagen grande a la izq., texto a la der. */
+  .grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr; /* imagen más protagónica */
+    gap:28px;
+    align-items:start;
+  }
+  @media (max-width:900px){
+    .grid{grid-template-columns:1fr}
+  }
+
+  /* Imagen */
+  .figure{
+    background:#f5f5f7;
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    min-height:480px;            /* más alta que antes */
+    display:grid; place-items:center;
+  }
   .figure img{width:100%;height:auto;display:block;object-fit:cover}
-  .controls{position:absolute;left:0;right:0;bottom:14px;display:flex;gap:18px;justify-content:center;align-items:center}
-  .btn{width:42px;height:42px;border-radius:50%;border:1px solid #d1d5db;background:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow);transition:transform .08s}
-  .btn:active{transform:scale(.96)}
-  .btn svg{width:20px;height:20px}
   .fade{animation:fade .35s ease-out}
   @keyframes fade{from{opacity:.2} to{opacity:1}}
 
+  /* Columna de texto: misma altura que la imagen */
+  .textCol{
+    border-radius:12px;
+    overflow:auto;               /* si el texto excede, hace scroll interno */
+    max-height:480px;            /* se ajusta por JS al alto real de la imagen */
+  }
+
   /* Lista de títulos + detalle (acordeón visual) */
-  .features{display:flex;flex-direction:column;gap:14px}
-  .feat{border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.03);position:relative}
-  .feat-title{margin:0;font-size:18px;font-weight:650;cursor:pointer;line-height:1.35}
+  .features{display:flex;flex-direction:column;gap:14px;padding-right:6px}
+  .feat{
+    border:1px solid #e5e7eb;border-radius:12px;
+    padding:14px 16px;background:#fff;
+    box-shadow:0 1px 2px rgba(0,0,0,.03);position:relative;
+    cursor:pointer;
+  }
+  .feat-title{margin:0;font-size:18px;font-weight:650;line-height:1.35}
   .feat-desc{margin:10px 2px 2px;color:var(--muted);line-height:1.55;font-size:15px;display:none}
   .feat.active{border-color:#d1d5db}
-  .feat.active::before{content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:4px;border-radius:12px 0 0 12px;background:var(--line)}
+  .feat.active::before{
+    content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:4px;
+    border-radius:12px 0 0 12px;background:var(--line)
+  }
   .feat.active .feat-desc{display:block}
+
+  /* Flechas globales: DEBAJO y centradas respecto a imagen+texto */
+  .controls-global{
+    display:flex;justify-content:center;align-items:center;gap:18px;
+    margin-top:18px;
+  }
+  .btn{
+    width:42px;height:42px;border-radius:50%;
+    border:1px solid #d1d5db;background:#fff;
+    display:grid;place-items:center;cursor:pointer;
+    box-shadow:var(--shadow);transition:transform .08s
+  }
+  .btn:active{transform:scale(.96)}
+  .btn svg{width:20px;height:20px}
 </style>
 </head>
 <body>
@@ -41,28 +82,30 @@
     <h1>Diseño exterior</h1>
 
     <div class="grid">
-      <!-- IZQUIERDA: imagen con flechas -->
+      <!-- Izquierda: imagen grande -->
       <figure class="figure">
         <img id="hero" src="mg-rx9-exterior-01-diseno-elegante.jpg" alt="MG RX9">
-        <div class="controls">
-          <button class="btn" id="prev" aria-label="Anterior">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="btn" id="next" aria-label="Siguiente">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
       </figure>
 
-      <!-- DERECHA: títulos siempre visibles; al hacer clic se expande y cambia la imagen -->
-      <section id="featureList" class="features" aria-label="Características RX9">
-        <!-- Se rellenará desde JS para mantener textos e imágenes sincronizados -->
+      <!-- Derecha: lista de títulos siempre visible + detalle expandible -->
+      <section class="textCol">
+        <div id="featureList" class="features" aria-label="Características RX9"></div>
       </section>
+    </div>
+
+    <!-- Flechas debajo, centradas en el ancho total -->
+    <div class="controls-global">
+      <button class="btn" id="prev" aria-label="Anterior">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="btn" id="next" aria-label="Siguiente">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </div>
   </div>
 
 <script>
-  // Data: título, detalle e imagen asociada (índice coincide con la imagen)
+  // Data sincronizada
   const slides = [
     {
       img:'mg-rx9-exterior-01-diseno-elegante.jpg',
@@ -96,7 +139,7 @@
     }
   ];
 
-  // Render de la lista de títulos + detalle
+  // Render lista derecha
   const list = document.getElementById('featureList');
   list.innerHTML = slides.map((s, idx) => `
     <article class="feat" data-idx="${idx}">
@@ -111,26 +154,35 @@
 
   function setActive(idx){
     i = (idx + slides.length) % slides.length;
-    // imagen
     hero.src = slides[i].img;
     hero.alt = slides[i].title;
     hero.classList.remove('fade'); void hero.offsetWidth; hero.classList.add('fade');
-    // acordeón visual
     items.forEach((el, k) => el.classList.toggle('active', k === i));
+    // mantener visible el título activo si hay scroll
+    items[i].scrollIntoView({block:'nearest', behavior:'smooth'});
+    syncHeights();
   }
 
-  // Click en título: expandir y cambiar imagen
-  items.forEach(el => {
-    el.addEventListener('click', () => setActive(+el.dataset.idx));
-  });
+  // Ajusta la altura del panel de texto a la altura real de la imagen
+  function syncHeights(){
+    const h = hero.getBoundingClientRect().height || 480;
+    document.querySelector('.textCol').style.maxHeight = h + 'px';
+  }
 
-  // Flechas sincronizadas
+  // Click en título
+  items.forEach(el => el.addEventListener('click', () => setActive(+el.dataset.idx)));
+
+  // Flechas
   document.getElementById('next').addEventListener('click', () => setActive(i+1));
   document.getElementById('prev').addEventListener('click', () => setActive(i-1));
   window.addEventListener('keydown', e => {
     if(e.key === 'ArrowRight') setActive(i+1);
     if(e.key === 'ArrowLeft')  setActive(i-1);
   });
+
+  // Recalcular al cargar imagen y al redimensionar
+  hero.addEventListener('load', syncHeights);
+  window.addEventListener('resize', syncHeights);
 
   // Estado inicial
   setActive(0);
