@@ -12,24 +12,24 @@
   }
   *{box-sizing:border-box}
   body{
-    margin:0; padding:24px;
+    margin:0; padding:0;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     color:#111; background:#fff;
-  }
-  h1{
-    margin:0 0 4px;
-    font-weight:700;
-    font-size: clamp(28px, 6vw, 56px);
-    letter-spacing: .3px;
-  }
-  .subtitle{
-    margin:0 0 12px; color:#6b7280;
-    font-size: clamp(14px, 2.2vw, 18px);
   }
   .stage{
     position:relative;
     max-width: min(1100px, 95vw);
-    margin: 8px auto 0;
+    margin: 20px auto;
+    text-align:center;
+  }
+  .title{
+    font-weight:700;
+    font-size: clamp(24px, 5vw, 42px);
+    margin-bottom: 4px;
+  }
+  .subtitle{
+    margin:0 0 12px; color:#6b7280;
+    font-size: clamp(14px, 2.2vw, 18px);
   }
   .car-frame{
     position:relative;
@@ -37,6 +37,7 @@
     overflow:hidden;
     background:#fff;
     box-shadow: var(--shadow);
+    padding-bottom: 60px; /* espacio para burbujas */
   }
   .car-img{
     width:100%; height:auto; display:block;
@@ -45,7 +46,7 @@
   }
   .swatches{
     position:absolute; left:50%; transform:translateX(-50%);
-    bottom:18px;
+    bottom:15px;
     display:flex; gap:18px;
     background: rgba(255,255,255,.9);
     padding:10px 16px;
@@ -68,51 +69,33 @@
     border-color: var(--ring-active);
     transform: scale(1.05);
   }
-  .swatch:focus-visible .dot{
-    outline: 3px solid rgba(17,17,17,.25);
-    outline-offset: 2px;
-  }
-  .visually-hidden{
-    position:absolute !important; width:1px; height:1px; padding:0; margin:-1px;
-    overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
-  }
-  @media (max-width: 640px){
-    .swatches{ position:static; transform:none; margin:12px auto 0; }
-  }
 </style>
 </head>
 <body>
-  <header>
-    <h1>Entre el mundo y tú está RX9</h1>
-    <p class="subtitle">Conoce la RX9</p>
-  </header>
-
   <main class="stage" aria-label="Selector de color RX9">
+    <div class="title">Entre el mundo y tú está RX9</div>
+    <p class="subtitle">Conoce la RX9</p>
+
     <div class="car-frame">
-      <!-- Color inicial: PLATA -->
+      <!-- Imagen inicial -->
       <img id="carImage" class="car-img" src="mg-rx9-color-04-plata.png" alt="MG RX9 color Plata" />
 
       <!-- Burbujas -->
       <div class="swatches" role="radiogroup" aria-label="Colores disponibles">
         <button class="swatch" title="Gris" role="radio" aria-checked="false" data-img="mg-rx9-color-02-gris.png" data-alt="MG RX9 color Gris">
           <span class="dot" style="background:#9aa0a6;"></span>
-          <span class="visually-hidden">Gris</span>
         </button>
         <button class="swatch" title="Negro" role="radio" aria-checked="false" data-img="mg-rx9-color-03-negro.png" data-alt="MG RX9 color Negro">
           <span class="dot" style="background:#0d0d0d;"></span>
-          <span class="visually-hidden">Negro</span>
         </button>
         <button class="swatch" title="Blanco" role="radio" aria-checked="false" data-img="mg-rx9-color-01-blanco.png" data-alt="MG RX9 color Blanco">
           <span class="dot" style="background:#ffffff;"></span>
-          <span class="visually-hidden">Blanco</span>
         </button>
         <button class="swatch" title="Plata" role="radio" aria-checked="true" data-img="mg-rx9-color-04-plata.png" data-alt="MG RX9 color Plata">
           <span class="dot" style="background:#d9dce0;"></span>
-          <span class="visually-hidden">Plata</span>
         </button>
         <button class="swatch" title="Verde" role="radio" aria-checked="false" data-img="mg-rx9-color-05-verde.png" data-alt="MG RX9 color Verde">
           <span class="dot" style="background:#0d6f3f;"></span>
-          <span class="visually-hidden">Verde</span>
         </button>
       </div>
     </div>
@@ -124,19 +107,6 @@
 
     swatches.forEach(btn => {
       btn.addEventListener('click', () => selectSwatch(btn));
-      btn.addEventListener('keydown', (e) => {
-        const idx = [...swatches].indexOf(btn);
-        if(e.key === 'ArrowRight' || e.key === 'ArrowDown'){
-          e.preventDefault();
-          const next = swatches[(idx + 1) % swatches.length];
-          next.focus(); selectSwatch(next);
-        }
-        if(e.key === 'ArrowLeft' || e.key === 'ArrowUp'){
-          e.preventDefault();
-          const prev = swatches[(idx - 1 + swatches.length) % swatches.length];
-          prev.focus(); selectSwatch(prev);
-        }
-      });
     });
 
     function selectSwatch(el){
