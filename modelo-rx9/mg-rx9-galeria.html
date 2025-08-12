@@ -1,137 +1,139 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>MG RX9 – Diseño exterior</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MG RX9 – Galería sincronizada</title>
 <style>
-  :root { --radius: 14px; --shadow: 0 8px 24px rgba(0,0,0,.08); }
-  body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; margin:0; padding:28px 20px 48px; color:#111; background:#fff; }
-  h1 { font-size: clamp(26px, 3vw, 44px); margin: 0 0 22px; font-weight: 650; }
-  .wrap { max-width: 1180px; margin: 0 auto; }
+  :root{
+    --radius:14px; --shadow:0 8px 24px rgba(0,0,0,.08);
+    --ink:#111; --muted:#4b5563; --line:#1f2937;
+  }
+  *{box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:28px 20px 48px;color:var(--ink);background:#fff}
+  h1{font-size:clamp(26px,3vw,44px);margin:0 0 22px;font-weight:650}
+  .wrap{max-width:1180px;margin:0 auto}
+  .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
 
-  .panel { display:grid; grid-template-columns: 1.2fr 1fr; gap:28px; align-items: stretch; }
-  @media (max-width: 900px){ .panel { grid-template-columns:1fr; } }
+  /* Imagen + flechas */
+  .figure{position:relative;background:#f5f5f7;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);min-height:360px;display:grid;place-items:center}
+  .figure img{width:100%;height:auto;display:block;object-fit:cover}
+  .controls{position:absolute;left:0;right:0;bottom:14px;display:flex;gap:18px;justify-content:center;align-items:center}
+  .btn{width:42px;height:42px;border-radius:50%;border:1px solid #d1d5db;background:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow);transition:transform .08s}
+  .btn:active{transform:scale(.96)}
+  .btn svg{width:20px;height:20px}
+  .fade{animation:fade .35s ease-out}
+  @keyframes fade{from{opacity:.2} to{opacity:1}}
 
-  /* Imagen */
-  .imgBox { background:#f5f5f7; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); display:grid; place-items:center; min-height:360px; }
-  .imgBox img { width:100%; height:auto; object-fit:cover; display:block; }
-
-  /* Texto */
-  .copy { border-left:3px solid #1f2937; padding-left:22px; display:flex; flex-direction:column; gap:18px; }
-  .copy h2 { margin:0; font-size: clamp(20px, 2.3vw, 26px); }
-  .copy p { margin:0; color:#4b5563; line-height:1.55; }
-
-  /* Flechas + dots */
-  .controls { display:flex; justify-content:center; align-items:center; gap:18px; margin-top:18px; }
-  .btn { width:42px; height:42px; border-radius:50%; border:1px solid #d1d5db; background:#fff; display:grid; place-items:center; cursor:pointer; transition:transform .08s ease; }
-  .btn:active { transform:scale(.96); }
-  .btn svg { width:20px; height:20px; }
-  .dots { display:flex; gap:8px; align-items:center; }
-  .dot { width:8px; height:8px; border-radius:50%; background:#d1d5db; }
-  .dot.active { background:#111; }
-
-  /* Fade suave al cambiar */
-  .fade { animation: fade .35s ease-out; }
-  @keyframes fade { from{opacity:.2} to{opacity:1} }
+  /* Lista de títulos + detalle (acordeón visual) */
+  .features{display:flex;flex-direction:column;gap:14px}
+  .feat{border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.03);position:relative}
+  .feat-title{margin:0;font-size:18px;font-weight:650;cursor:pointer;line-height:1.35}
+  .feat-desc{margin:10px 2px 2px;color:var(--muted);line-height:1.55;font-size:15px;display:none}
+  .feat.active{border-color:#d1d5db}
+  .feat.active::before{content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:4px;border-radius:12px 0 0 12px;background:var(--line)}
+  .feat.active .feat-desc{display:block}
 </style>
 </head>
 <body>
   <div class="wrap">
     <h1>Diseño exterior</h1>
 
-    <div class="panel">
-      <figure class="imgBox">
-        <img id="slideImage" src="mg-rx9-exterior-01-diseno-elegante.jpg" alt="MG RX9">
+    <div class="grid">
+      <!-- IZQUIERDA: imagen con flechas -->
+      <figure class="figure">
+        <img id="hero" src="mg-rx9-exterior-01-diseno-elegante.jpg" alt="MG RX9">
+        <div class="controls">
+          <button class="btn" id="prev" aria-label="Anterior">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="btn" id="next" aria-label="Siguiente">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
       </figure>
 
-      <section class="copy">
-        <h2 id="slideTitle">Diseño exterior elegante y sofisticado</h2>
-        <p id="slideDesc">La RX9 irradia un diseño que capta miradas a cada instante. Con sus manijas ocultadas añaden un toque minimalista, pero con su imponente parrilla fusionará todo el diseño para ofrecer modernidad y distinción.</p>
+      <!-- DERECHA: títulos siempre visibles; al hacer clic se expande y cambia la imagen -->
+      <section id="featureList" class="features" aria-label="Características RX9">
+        <!-- Se rellenará desde JS para mantener textos e imágenes sincronizados -->
       </section>
-    </div>
-
-    <div class="controls">
-      <button class="btn" id="prevBtn" aria-label="Anterior">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-
-      <div class="dots" id="dots"></div>
-
-      <button class="btn" id="nextBtn" aria-label="Siguiente">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
     </div>
   </div>
 
 <script>
-  // Slides: imagen + título + descripción (según tus textos)
+  // Data: título, detalle e imagen asociada (índice coincide con la imagen)
   const slides = [
     {
-      img: 'mg-rx9-exterior-01-diseno-elegante.jpg',
-      title: 'Diseño exterior elegante y sofisticado',
-      desc: 'La RX9 irradia un diseño que capta miradas a cada instante. Con sus manijas ocultadas añaden un toque minimalista, pero con su imponente parrilla fusionará todo el diseño para ofrecer modernidad y distinción.'
+      img:'mg-rx9-exterior-01-diseno-elegante.jpg',
+      title:'Diseño exterior elegante y sofisticado',
+      desc:'La RX9 irradia un diseño que capta miradas a cada instante. Con sus manijas ocultadas añaden un toque minimalista, pero con su imponente parrilla fusionará todo el diseño para ofrecer modernidad y distinción.'
     },
     {
-      img: 'mg-rx9-exterior-02-rin.jpg',
-      title: 'Estilo y Desempeño en la RX9',
-      desc: 'La RX9 se destaca por sus rines de aluminio de hasta 21” bitono y llantas de calidad, esta combinación asegura un estilo elegante y un manejo excepcional en cualquier condición.'
+      img:'mg-rx9-exterior-02-rin.jpg',
+      title:'Estilo y Desempeño en la RX9',
+      desc:'La RX9 se destaca por sus rines de aluminio de hasta 21” bitono y llantas de calidad, esta combinación asegura un estilo elegante y un manejo excepcional en cualquier condición.'
     },
     {
-      img: 'mg-rx9-exterior-03-techo-panoramico.jpg',
-      title: 'Descubre la libertad de conducir bajo un cielo abierto y transforma tu manera de viajar',
-      desc: 'La RX9 transforma cada viaje en una experiencia única con su techo panorámico y cortina translúcida, creando un ambiente envolvente en tus recorridos. Los rieles de aluminio en el techo también añaden sofisticación y funcionalidad, enriqueciendo tu experiencia de conducción'
+      img:'mg-rx9-exterior-03-techo-panoramico.jpg',
+      title:'Descubre la libertad de conducir bajo un cielo abierto y transforma tu manera de viajar',
+      desc:'La RX9 transforma cada viaje en una experiencia única con su techo panorámico y cortina translúcida, creando un ambiente envolvente en tus recorridos. Los rieles de aluminio en el techo también añaden sofisticación y funcionalidad, enriqueciendo tu experiencia de conducción.'
     },
     {
-      img: 'mg-rx9-exterior-04-cajuela-electrica.jpg',
-      title: 'Viaja sin límites y lleva todo lo que necesitas',
-      desc: 'La RX9 te brinda una cajuela eléctrica con apertura remota, combinando comodidad y estilo. Con capacidad de hasta 1,025L y lleva a todos, gracias a su tercera fila de asientos.'
+      img:'mg-rx9-exterior-04-cajuela-electrica.jpg',
+      title:'Viaja sin límites y lleva todo lo que necesitas',
+      desc:'La RX9 te brinda una cajuela eléctrica con apertura remota, combinando comodidad y estilo. Con capacidad de hasta 1,025L y lleva a todos, gracias a su tercera fila de asientos.'
     },
     {
-      img: 'mg-rx9-exterior-05-faros.jpg',
-      title: 'Iluminación Sobresaliente',
-      desc: 'Incorpora tecnología Full LED, con luces diurnas LED DRL que mejoran la visibilidad y añaden un toque moderno. Además, está equipada con faros de niebla delanteros y traseros, asegurando una iluminación óptima en todas las condiciones.'
+      img:'mg-rx9-exterior-05-faros.jpg',
+      title:'Iluminación Sobresaliente',
+      desc:'Incorpora tecnología Full LED, con luces diurnas LED DRL que mejoran la visibilidad y añaden un toque moderno. Además, está equipada con faros de niebla delanteros y traseros, asegurando una iluminación óptima en todas las condiciones.'
     },
     {
-      img: 'mg-rx9-exterior-06-spoiler.jpg',
-      title: 'Iluminación Trasera Vanguardista',
-      desc: 'Brilla con un estilo inigualable gracias a sus luces traseras LED de diseño en forma de rombos, que integran 185 LED. Además, cuenta con una tercera luz de freno montada en su elegante spoiler doble trasero.'
+      img:'mg-rx9-exterior-06-spoiler.jpg',
+      title:'Iluminación Trasera Vanguardista',
+      desc:'Brilla con un estilo inigualable gracias a sus luces traseras LED de diseño en forma de rombos, que integran 185 LED. Además, cuenta con una tercera luz de freno montada en su elegante spoiler doble trasero.'
     }
   ];
 
-  const imgEl   = document.getElementById('slideImage');
-  const titleEl = document.getElementById('slideTitle');
-  const descEl  = document.getElementById('slideDesc');
-  const dotsEl  = document.getElementById('dots');
+  // Render de la lista de títulos + detalle
+  const list = document.getElementById('featureList');
+  list.innerHTML = slides.map((s, idx) => `
+    <article class="feat" data-idx="${idx}">
+      <h3 class="feat-title">${s.title}</h3>
+      <p class="feat-desc">${s.desc}</p>
+    </article>
+  `).join('');
+
+  const hero = document.getElementById('hero');
+  const items = [...document.querySelectorAll('.feat')];
   let i = 0;
 
-  // Render inicial y dots
-  slides.forEach((_, idx) => {
-    const d = document.createElement('div');
-    d.className = 'dot' + (idx === 0 ? ' active' : '');
-    d.addEventListener('click', () => goTo(idx));
-    dotsEl.appendChild(d);
-  });
-
-  function render() {
-    const s = slides[i];
-    imgEl.src = s.img;
-    imgEl.alt = s.title;
-    imgEl.classList.remove('fade'); void imgEl.offsetWidth; imgEl.classList.add('fade');
-    titleEl.textContent = s.title;
-    descEl.textContent  = s.desc;
-    [...dotsEl.children].forEach((d, idx) => d.classList.toggle('active', idx === i));
+  function setActive(idx){
+    i = (idx + slides.length) % slides.length;
+    // imagen
+    hero.src = slides[i].img;
+    hero.alt = slides[i].title;
+    hero.classList.remove('fade'); void hero.offsetWidth; hero.classList.add('fade');
+    // acordeón visual
+    items.forEach((el, k) => el.classList.toggle('active', k === i));
   }
 
-  function next(){ i = (i + 1) % slides.length; render(); }
-  function prev(){ i = (i - 1 + slides.length) % slides.length; render(); }
-  function goTo(idx){ i = idx; render(); }
+  // Click en título: expandir y cambiar imagen
+  items.forEach(el => {
+    el.addEventListener('click', () => setActive(+el.dataset.idx));
+  });
 
-  document.getElementById('nextBtn').addEventListener('click', next);
-  document.getElementById('prevBtn').addEventListener('click', prev);
-  window.addEventListener('keydown', e => { if(e.key==='ArrowRight') next(); if(e.key==='ArrowLeft') prev(); });
+  // Flechas sincronizadas
+  document.getElementById('next').addEventListener('click', () => setActive(i+1));
+  document.getElementById('prev').addEventListener('click', () => setActive(i-1));
+  window.addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight') setActive(i+1);
+    if(e.key === 'ArrowLeft')  setActive(i-1);
+  });
 
-  render();
+  // Estado inicial
+  setActive(0);
 </script>
 </body>
 </html>
